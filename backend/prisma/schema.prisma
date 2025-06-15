@@ -13,3 +13,38 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model FirstName {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model LastName {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model Hometown {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model Occupation {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model Religion {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model SocioeconomicBackground {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
+
+model FamilyHobby {
+  id    Int    @id @default(autoincrement())
+  value String @unique
+}
