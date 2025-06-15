@@ -1,35 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Link, Route, Routes } from 'react-router-dom'
 import CrewList from './components/CrewList'
+import ProfilePage from './pages/ProfilePage'
+import RecruitPage from './pages/RecruitPage'
+import ParcelsPage from './pages/ParcelsPage'
+import TrainPage from './pages/TrainPage'
+import DeployPage from './pages/DeployPage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <CrewList />
+      <nav>
+        <ul>
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/profile">Profile</Link></li>
+          <li><Link to="/recruit">Recruit</Link></li>
+          <li><Link to="/parcels/1">Parcels</Link></li>
+          <li><Link to="/train">Train</Link></li>
+          <li><Link to="/deploy">Deploy</Link></li>
+        </ul>
+      </nav>
+      <Routes>
+        <Route path="/" element={<CrewList />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/recruit" element={<RecruitPage />} />
+        <Route path="/parcels/:id" element={<ParcelsPage />} />
+        <Route path="/train" element={<TrainPage />} />
+        <Route path="/deploy" element={<DeployPage />} />
+      </Routes>
     </>
   )
 }
