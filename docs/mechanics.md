@@ -46,3 +46,39 @@ assembled from random lookup tables (first/last names, hometown, occupation,
 religion, socioeconomic background and family hobby). The endpoint returns the
 created crew array with full text values.
 
+## Profile & Currency API
+
+### Get Profile
+
+`GET /api/user/profile`
+
+Returns the user's rank, stamps and bonds. Example response:
+
+```json
+{
+  "rank": "Recruit",
+  "stamps": 0,
+  "bonds": 0
+}
+```
+
+### Grant Stamps
+
+`POST /api/user/stamps/grant?amount=5`
+
+Adds stamps to the current balance and returns the new total.
+
+```json
+{ "stamps": 5 }
+```
+
+### Grant Bonds
+
+`POST /api/user/bonds/grant?amount=10`
+
+Adds bonds to the current balance and returns the new total.
+
+```json
+{ "bonds": 10 }
+```
+
