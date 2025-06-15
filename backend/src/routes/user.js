@@ -49,3 +49,4 @@ router.post('/user/bonds/grant', (req, res) => {
 });
 
 module.exports = router;
+module.exports.user = user;
