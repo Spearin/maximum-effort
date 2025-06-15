@@ -82,3 +82,40 @@ Adds bonds to the current balance and returns the new total.
 { "bonds": 10 }
 ```
 
+## Crew Parcel API
+
+### Get Crew Parcels
+
+`GET /api/crews/{id}/parcels`
+
+Returns an array of up to three parcel slots for the crew. Each slot shows
+whether it has been opened.
+
+```json
+[
+  { "opened": false },
+  { "opened": true },
+  { "opened": false }
+]
+```
+
+### Open a Parcel
+
+`POST /api/crews/{id}/parcels/open`
+
+Send JSON `{ "slotIndex": 0, "stamps": 1 }` to open the specified slot. The
+user's stamps are deducted and 1–3 random card IDs are generated.
+
+Example response:
+
+```json
+{
+  "parcels": [
+    { "opened": true },
+    { "opened": false },
+    { "opened": false }
+  ],
+  "cards": ["talisman-1-ab12cd"]
+}
+```
+
