@@ -37,3 +37,12 @@ The `CrewList` React component (located in `/game-site/src/components/CrewList.t
 
 ![Crew list screenshot](img/crew-list-placeholder.png)
 
+### Recruit Crew Members
+
+`POST /api/crews/recruit`
+
+Send JSON `{ "count": 3 }` to generate up to 10 new crew members. Each member is
+assembled from random lookup tables (first/last names, hometown, occupation,
+religion, socioeconomic background and family hobby). The endpoint returns the
+created crew array with full text values.
+
