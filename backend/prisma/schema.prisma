@@ -83,3 +83,13 @@ model Card {
   description String
   effects     Json
 }
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  rank      String   @default("Recruiter")
+  stamps    Int      @default(0)
+  bonds     Int      @default(0)
+  crews     Crew[]
+}
