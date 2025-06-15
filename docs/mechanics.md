@@ -119,3 +119,35 @@ Example response:
 }
 ```
 
+
+## Card Templates API
+
+### Get Card Templates
+
+`GET /api/cards/templates`
+
+Returns the list of available card templates.
+
+```json
+[
+  {
+    "id": "character-ace",
+    "type": "character",
+    "rarity": "rare",
+    "name": "Ace Pilot",
+    "description": "Improves mission success chance",
+    "effects": { "skill": "+1" }
+  }
+]
+```
+
+### Assign Cards to a Crew
+
+`POST /api/crews/{id}/cards/assign`
+
+Send JSON `{ "cardIds": ["character-ace"] }` to manually assign cards to a crew.
+The endpoint returns the crew's full card list.
+
+```json
+{ "cards": ["character-ace"] }
+```

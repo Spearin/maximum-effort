@@ -28,16 +28,13 @@ const crews = [
 
 const router = express.Router();
 const { user } = require('./user');
+const { cardTemplates } = require('./cards');
 
 // In-memory parcel slots keyed by crew id
 const crewParcels = {};
+// In-memory cards assigned to each crew id
+const crewCards = {};
 
-// Simple placeholder card templates
-const cardTemplates = [
-  { id: 'talisman-1' },
-  { id: 'object-1' },
-  { id: 'event-1' },
-];
 
 const randomCardId = () => {
   const tpl = cardTemplates[Math.floor(Math.random() * cardTemplates.length)];
@@ -193,6 +190,30 @@ router.post('/crews/:id/parcels/open', (req, res) => {
   slot.cards = cards;
 
   res.json({ parcels: crewParcels[id].map(p => ({ opened: p.opened })), cards });
+});
+
+/**
+ * POST /api/crews/:id/cards/assign
+ * Assign specific card IDs to the crew.
+ * @param {string[]} req.body.cardIds Array of card IDs to assign
+ */
+router.post('/crews/:id/cards/assign', (req, res) => {
+  const id = Number(req.params.id);
+  const { cardIds } = req.body || {};
+
+  if (!Number.isInteger(id)) {
+    return res.status(400).json({ error: 'invalid crew id' });
+  }
+  if (!Array.isArray(cardIds) || cardIds.some(c => typeof c !== 'string')) {
+    return res.status(400).json({ error: 'cardIds must be an array of strings' });
+  }
+
+  if (!crewCards[id]) {
+    crewCards[id] = [];
+  }
+
+  crewCards[id].push(...cardIds);
+  res.json({ cards: crewCards[id] });
 });
 
 module.exports = router;
