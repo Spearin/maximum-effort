@@ -151,3 +151,25 @@ The endpoint returns the crew's full card list.
 ```json
 { "cards": ["character-ace"] }
 ```
+
+## Authentication API
+
+### Register
+
+`POST /api/auth/register`
+
+Send JSON `{ "email": "user@example.com", "password": "pass" }` to create a new user. On success, returns a JWT token:
+
+```json
+{ "token": "<jwt>" }
+```
+
+### Login
+
+`POST /api/auth/login`
+
+Provide credentials in the same format as registration. If valid, a signed JWT is returned:
+
+```json
+{ "token": "<jwt>" }
+```
