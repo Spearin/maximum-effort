@@ -17,34 +17,60 @@ datasource db {
 model FirstName {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model LastName {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model Hometown {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model Occupation {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model Religion {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model SocioeconomicBackground {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
 }
 
 model FamilyHobby {
   id    Int    @id @default(autoincrement())
   value String @unique
+  crewMembers CrewMember[]
+}
+
+model CrewMember {
+  id                          Int @id @default(autoincrement())
+  firstNameId                 Int
+  lastNameId                  Int
+  hometownId                  Int
+  occupationId                Int
+  religionId                  Int
+  socioeconomicBackgroundId   Int
+  familyHobbyId               Int
+
+  firstName        FirstName              @relation(fields: [firstNameId], references: [id])
+  lastName         LastName               @relation(fields: [lastNameId], references: [id])
+  hometown         Hometown               @relation(fields: [hometownId], references: [id])
+  occupation       Occupation             @relation(fields: [occupationId], references: [id])
+  religion         Religion               @relation(fields: [religionId], references: [id])
+  socioeconomicBackground SocioeconomicBackground @relation(fields: [socioeconomicBackgroundId], references: [id])
+  familyHobby      FamilyHobby            @relation(fields: [familyHobbyId], references: [id])
 }
