@@ -74,3 +74,12 @@ model CrewMember {
   socioeconomicBackground SocioeconomicBackground @relation(fields: [socioeconomicBackgroundId], references: [id])
   familyHobby      FamilyHobby            @relation(fields: [familyHobbyId], references: [id])
 }
+
+model Card {
+  id          String @id @default(uuid())
+  type        String
+  rarity      String
+  name        String
+  description String
+  effects     Json
+}
