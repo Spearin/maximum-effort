@@ -4,6 +4,7 @@ theme:
 nav:
   - Home: index.md
   - Game Mechanics: mechanics.md
+  - Crew & Parcel Design: crew_parcel_design.md
   - Historical Context: history.md
   - Tutorials: tutorials.md
   - Play the Game: https://maximum-effort.com
