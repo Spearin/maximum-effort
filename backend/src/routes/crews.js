@@ -27,7 +27,6 @@ const crews = [
 ];
 
 const router = express.Router();
-const { user } = require('./user');
 const { cardTemplates } = require('./cards');
 
 // In-memory parcel slots keyed by crew id
@@ -149,7 +148,7 @@ router.get('/crews/:id/parcels', (req, res) => {
  * @param {number} req.body.slotIndex Index of the slot to open (0-2)
  * @param {number} req.body.stamps   Number of stamps to spend
  */
-router.post('/crews/:id/parcels/open', (req, res) => {
+router.post('/crews/:id/parcels/open', async (req, res, next) => {
   const id = Number(req.params.id);
   const { slotIndex, stamps } = req.body || {};
 
@@ -162,34 +161,43 @@ router.post('/crews/:id/parcels/open', (req, res) => {
   if (!Number.isInteger(stamps) || stamps <= 0) {
     return res.status(400).json({ error: 'stamps must be a positive integer' });
   }
-  if (user.stamps < stamps) {
-    return res.status(400).json({ error: 'not enough stamps' });
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user || user.stamps < stamps) {
+      return res.status(400).json({ error: 'not enough stamps' });
+    }
+
+    if (!crewParcels[id]) {
+      crewParcels[id] = [
+        { opened: false, cards: [] },
+        { opened: false, cards: [] },
+        { opened: false, cards: [] },
+      ];
+    }
+
+    const slot = crewParcels[id][slotIndex];
+    if (slot.opened) {
+      return res.status(400).json({ error: 'slot already opened' });
+    }
+
+    await prisma.user.update({
+      where: { id: req.user.id },
+      data: { stamps: { decrement: stamps } },
+    });
+
+    const cardCount = Math.floor(Math.random() * 3) + 1;
+    const cards = [];
+    for (let i = 0; i < cardCount; i++) {
+      cards.push(randomCardId());
+    }
+
+    slot.opened = true;
+    slot.cards = cards;
+
+    res.json({ parcels: crewParcels[id].map(p => ({ opened: p.opened })), cards });
+  } catch (err) {
+    next(err);
   }
-
-  if (!crewParcels[id]) {
-    crewParcels[id] = [
-      { opened: false, cards: [] },
-      { opened: false, cards: [] },
-      { opened: false, cards: [] },
-    ];
-  }
-
-  const slot = crewParcels[id][slotIndex];
-  if (slot.opened) {
-    return res.status(400).json({ error: 'slot already opened' });
-  }
-
-  user.stamps -= stamps;
-  const cardCount = Math.floor(Math.random() * 3) + 1;
-  const cards = [];
-  for (let i = 0; i < cardCount; i++) {
-    cards.push(randomCardId());
-  }
-
-  slot.opened = true;
-  slot.cards = cards;
-
-  res.json({ parcels: crewParcels[id].map(p => ({ opened: p.opened })), cards });
 });
 
 /**

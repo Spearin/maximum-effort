@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuthFetch } from '../AuthContext'
 
 interface Profile {
   rank: string
@@ -10,11 +11,12 @@ function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const authFetch = useAuthFetch()
 
   useEffect(() => {
     async function loadProfile() {
       try {
-        const res = await fetch('/api/user/profile')
+        const res = await authFetch('/api/user/profile')
         if (!res.ok) {
           throw new Error('Failed to load profile')
         }
@@ -28,7 +30,7 @@ function ProfilePage() {
     }
 
     loadProfile()
-  }, [])
+  }, [authFetch])
 
   if (error) {
     return <p role="alert">{error}</p>

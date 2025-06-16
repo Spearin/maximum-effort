@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuthFetch } from '../AuthContext'
 
 interface CrewMember {
   name: string
@@ -15,11 +16,12 @@ function CrewList() {
   const [crews, setCrews] = useState<Crew[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const authFetch = useAuthFetch()
 
   useEffect(() => {
     async function loadCrews() {
       try {
-        const res = await fetch('/api/crews')
+        const res = await authFetch('/api/crews')
         if (!res.ok) {
           throw new Error('Failed to load crews')
         }
@@ -33,7 +35,7 @@ function CrewList() {
     }
 
     loadCrews()
-  }, [])
+  }, [authFetch])
 
   if (error) {
     return <p role="alert">{error}</p>
