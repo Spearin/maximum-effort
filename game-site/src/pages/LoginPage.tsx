@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../AuthContext'
 
 function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const { login } = useAuth()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -21,7 +23,7 @@ function LoginPage() {
       }
       const data = await res.json()
       if (data.token) {
-        localStorage.setItem('token', data.token)
+        login(data.token)
         navigate('/profile')
       }
     } catch {

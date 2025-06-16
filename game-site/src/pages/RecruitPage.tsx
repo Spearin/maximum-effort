@@ -1,16 +1,18 @@
 import { useState } from 'react'
+import { useAuthFetch } from '../AuthContext'
 
 function RecruitPage() {
   const [count, setCount] = useState(1)
   const [message, setMessage] = useState('')
   const [error, setError] = useState('')
+  const authFetch = useAuthFetch()
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setMessage('')
     setError('')
     try {
-      const res = await fetch('/api/crews/recruit', {
+      const res = await authFetch('/api/crews/recruit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ count }),

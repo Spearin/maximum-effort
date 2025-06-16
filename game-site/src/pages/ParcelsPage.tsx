@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useAuthFetch } from '../AuthContext'
 
 interface ParcelSlot {
   opened: boolean
@@ -10,11 +11,12 @@ function ParcelsPage() {
   const [slots, setSlots] = useState<ParcelSlot[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const authFetch = useAuthFetch()
 
   useEffect(() => {
     async function loadParcels() {
       try {
-        const res = await fetch(`/api/crews/${id}/parcels`)
+        const res = await authFetch(`/api/crews/${id}/parcels`)
         if (!res.ok) {
           throw new Error('Failed to load parcels')
         }
@@ -30,12 +32,12 @@ function ParcelsPage() {
     if (id) {
       loadParcels()
     }
-  }, [id])
+  }, [id, authFetch])
 
   async function handleOpen(index: number) {
     if (!id) return
     try {
-      const res = await fetch(`/api/crews/${id}/parcels/open`, {
+      const res = await authFetch(`/api/crews/${id}/parcels/open`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ slotIndex: index, stamps: 1 }),
